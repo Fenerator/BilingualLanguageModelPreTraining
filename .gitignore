@@ -122,3 +122,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# tools, data, and dumped models
+# /tools
+/data
+/dumped
