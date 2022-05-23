@@ -45,12 +45,18 @@ Language Model: **EN_TR**
 
 We use monolingual data consisting of multiple corpora thus we apply the MLM approach.
 
+venv, activate
+
 Download and tokenize the data:
 
 ```bash
+tmux attach-session -t bllmpt
+
 # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
 # Note: the tokenization includes lower-casing and accent-removal
-./get-data-wiki.sh en
+./get-data-wiki.sh en # in progress
+./get-data-wiki.sh fr
+./get-data-wiki.sh tr
 
 # Optionally use this for tokenization:
 lg=en
