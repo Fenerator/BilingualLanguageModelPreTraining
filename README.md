@@ -9,9 +9,16 @@
 
 ### Languages
 
-- English
-- French
-- Turkish
+1. English
+2. French
+3. Turkish
+
+We need the following partitions of each of the languages above:
+
+- single domain
+- multiple domain
+- small
+- large
 
 ### Content
 
@@ -20,16 +27,22 @@
 
 ## Experiments
 
-Language Model: EN_FR
-Language Model: EN_TR
+Language Model: **EN_FR**
 
 - [ ] single domain for both languages: trained on Wikipedia material only
 - [ ] multiple domain for both languages: all domains available
 - [ ] equal amount of training material for both languages (full size of smaller dataset)
-- [ ] different amount of training material: small amount, large amount (proportional to sizes of SW to EN or GER or FR) :white_check_mark:
+- [ ] different amount of training material: small amount, large amount (proportional to sizes of SW to EN or GER or FR)
+
+Language Model: **EN_TR**
+
+- [ ] single domain for both languages: trained on Wikipedia material only
+- [ ] multiple domain for both languages: all domains available
+- [ ] equal amount of training material for both languages (full size of smaller dataset)
+- [ ] different amount of training material: small amount, large amount (proportional to sizes of SW to EN or GER or FR)
 
 ## Steps to Run One Experiment
 
 ## Aim
 
-Control for typology, domain, script of the pre-training material used. Investigate whether similar effects occur in the cross-lingual topic evaluation metrics as was the case with Swahili, where (1) very limited amounts of training material are available and (2) domains seem to be rather limited in terms of diversity / sources.
+Control for typology, domain, script of the pre-training material used. Investigate whether similar effects occur in the cross-lingual topic evaluation metrics as was the case with Swahili, where (1) very limited amounts of training material are available and (2) domains seem to be rather limited in terms of diversity / sources. Upload models then to Huggingface, where we can easily use them in the topic model afterwards.
