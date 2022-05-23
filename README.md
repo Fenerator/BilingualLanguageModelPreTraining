@@ -2,10 +2,10 @@
 
 ## Approaches
 
-- Using Facebook's original code: Pre-training in the same way as XLM-R with MLM and TLM [here](https://github.com/facebookresearch/xlm#ii-cross-lingual-language-model-pretraining-xlm)
+- Using Facebook's original code: Pre-training in the same way as XLM-R with MLM and TLM [here](https://github.com/facebookresearch/xlm#train-your-own-xlm-model-with-mlm-or-mlmtlm)
 - using Huggingface: Pre-training of language model (monolingual only): [here](https://huggingface.co/blog/how-to-train)
 
-## Corpi
+## Corpora
 
 ### Languages
 
@@ -41,7 +41,94 @@ Language Model: **EN_TR**
 - [ ] equal amount of training material for both languages (full size of smaller dataset)
 - [ ] different amount of training material: small amount, large amount (proportional to sizes of SW to EN or GER or FR)
 
-## Steps to Run One Experiment
+## Steps to train own XLM Model
+
+We use monolingual data consisting of multiple corpora thus we apply the MLM approach.
+
+Download and tokenize the data:
+
+```bash
+# Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
+# Note: the tokenization includes lower-casing and accent-removal
+./get-data-wiki.sh en
+
+# Optionally use this for tokenization:
+lg=en
+cat my_file.$lg | ./tools/tokenize.sh $lg > my_tokenized_file.$lg &
+```
+
+learn BPE using xxx codes:
+
+```bash
+OUTPATH=data/processed/XLM_en/30k  # path where processed files will be stored
+FASTBPE=tools/fastBPE/fast  # path to the fastBPE tool
+
+# create output path
+mkdir -p $OUTPATH
+
+# learn bpe codes on the training set (or only use a subset of it)
+$FASTBPE learnbpe 30000 data/wiki/txt/en.train > $OUTPATH/codes
+```
+
+apply BPE on all partitions of the data (train/valid/test):
+
+```bash
+$FASTBPE applybpe $OUTPATH/train.en data/wiki/txt/en.train $OUTPATH/codes &
+$FASTBPE applybpe $OUTPATH/valid.en data/wiki/txt/en.valid $OUTPATH/codes &
+$FASTBPE applybpe $OUTPATH/test.en data/wiki/txt/en.test $OUTPATH/codes &
+```
+
+get the post-BPE vocabulary:
+
+```bash
+cat $OUTPATH/train.en | $FASTBPE getvocab - > $OUTPATH/vocab &
+```
+
+Binarize the data:
+
+```bash
+# This will create three files: $OUTPATH/{train,valid,test}.en.pth
+# After that we're all set
+python preprocess.py $OUTPATH/vocab $OUTPATH/train.en &
+python preprocess.py $OUTPATH/vocab $OUTPATH/valid.en &
+python preprocess.py $OUTPATH/vocab $OUTPATH/test.en &
+```
+
+Train the model:
+
+```bash
+python train.py
+
+## main parameters
+--exp_name xlm_en_zh                       # experiment name
+--dump_path ./dumped                       # where to store the experiment
+
+## data location / training objective
+--data_path $OUTPATH                       # data location
+--lgs 'en-zh'                              # considered languages
+--clm_steps ''                             # CLM objective (for training GPT-2 models)
+--mlm_steps 'en,zh'                        # MLM objective
+
+## transformer parameters
+--emb_dim 1024                             # embeddings / model dimension (2048 is big, reduce if only 16Gb of GPU memory)
+--n_layers 12                              # number of layers
+--n_heads 16                               # number of heads
+--dropout 0.1                              # dropout
+--attention_dropout 0.1                    # attention dropout
+--gelu_activation true                     # GELU instead of ReLU
+
+## optimization
+--batch_size 32                            # sequences per batch
+--bptt 256                                 # sequences length  (streams of 256 tokens)
+--optimizer adam,lr=0.0001                 # optimizer (training is quite sensitive to this parameter)
+--epoch_size 300000                        # number of sentences per epoch
+--max_epoch 100000                         # max number of epochs (~infinite here)
+--validation_metrics _valid_mlm_ppl        # validation metric (when to save the best model)
+--stopping_criterion _valid_mlm_ppl,25     # stopping criterion (if criterion does not improve 25 times)
+--fp16 true                                # use fp16 training
+
+## There are other parameters that are not specified here (see [here](https://github.com/facebookresearch/XLM/blob/master/train.py#L24-L198)).
+```
 
 ## Aim
 
