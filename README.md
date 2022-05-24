@@ -45,7 +45,13 @@ Language Model: **EN_TR**
 
 We use monolingual data consisting of multiple corpora thus we apply the MLM approach.
 
-venv, activate
+create venv, activate
+
+install dependencies:
+
+```bash
+pip install -e .
+```
 
 Download and tokenize the data:
 
@@ -54,14 +60,13 @@ tmux attach-session -t bllmpt
 
 # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
 # Note: the tokenization includes lower-casing and accent-removal
-./get-data-wiki.sh en # in progress
+./get-data-wiki.sh en
 ./get-data-wiki.sh fr
 ./get-data-wiki.sh tr
-
-# Optionally use this for tokenization:
-lg=en
-cat my_file.$lg | ./tools/tokenize.sh $lg > my_tokenized_file.$lg &
 ```
+
+> if error: `head: unrecognized option '--10000'
+> Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
 
 learn BPE using xxx codes:
 
