@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2019-present, Facebook, Inc.
 # All rights reserved.
 #
@@ -42,7 +43,7 @@ echo "Downloaded $WIKI_DUMP_NAME in $WIKI_PATH/bz2/$WIKI_DUMP_NAME"
 cd $MAIN_PATH
 echo "*** Cleaning and tokenizing $lg Wikipedia dump ... ***"
 if [ ! -f $WIKI_PATH/txt/$lg.all ]; then
-  python $TOOLS_PATH/wikiextractor/WikiExtractor.py $WIKI_PATH/bz2/$WIKI_DUMP_NAME --processes 8 -q -o - \
+  python -m wikiextractor.WikiExtractor $WIKI_PATH/bz2/$WIKI_DUMP_NAME --processes 8 -q -o - \
   | sed "/^\s*\$/d" \
   | grep -v "^<doc id=" \
   | grep -v "</doc>\$" \
@@ -54,6 +55,8 @@ echo "*** Tokenized (+ lowercase + accent-removal) $lg Wikipedia dump to $WIKI_P
 
 # split into train / valid / test
 echo "*** Split into train / valid / test ***"
+echo $1
+
 split_data() {
     get_seeded_random() {
         seed="$1"; openssl enc -aes-256-ctr -pass pass:"$seed" -nosalt </dev/zero 2>/dev/null
