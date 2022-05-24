@@ -68,7 +68,13 @@ tmux attach-session -t bllmpt
 > if error: `head: unrecognized option '--10000'
 > Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
 
-learn BPE using xxx codes:
+Generate BPE:
+
+```bash
+./generate_bpe.sh <LANG>
+```
+
+> learn BPE using xxx codes:
 
 ```bash
 OUTPATH=data/processed/XLM_en/30k  # path where processed files will be stored
@@ -89,13 +95,13 @@ $FASTBPE applybpe $OUTPATH/valid.en data/wiki/txt/en.valid $OUTPATH/codes &
 $FASTBPE applybpe $OUTPATH/test.en data/wiki/txt/en.test $OUTPATH/codes &
 ```
 
-get the post-BPE vocabulary:
+> get the post-BPE vocabulary:
 
 ```bash
 cat $OUTPATH/train.en | $FASTBPE getvocab - > $OUTPATH/vocab &
 ```
 
-Binarize the data:
+> Binarize the data:
 
 ```bash
 # This will create three files: $OUTPATH/{train,valid,test}.en.pth
