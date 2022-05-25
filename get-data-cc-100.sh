@@ -37,9 +37,11 @@ then
     xz -d -v $CC_PATH/$CC_DUMP_NAME
 fi
 
+TXT_PATH=$CC_PATH/txt
+mkdir -p $TXT_PATH
 
 cd $MAIN_PATH
-if [ ! -f $CC_PATH/$lg.all ]; then
+if [ ! -f $TXT_PATH/$lg.all ]; then
     echo "*** Cleaning and tokenizing $lg CC-100 dump ... ***"
     sed '1d' $CC_PATH/$lg.txt \
   | sed "/^\s*\$/d" \
@@ -47,12 +49,13 @@ if [ ! -f $CC_PATH/$lg.all ]; then
   | grep -v "</doc>\$" \
   | $TOKENIZE $lg \
   | python $LOWER_REMOVE_ACCENT \
-  > $CC_PATH/$lg.all
+  > $TXT_PATH/$lg.all
 fi
-echo "*** Tokenized (+ lowercase + accent-removal) $lg CC-100 dump to $CC_PATH/${lg}.all ***"
+echo "*** Tokenized (+ lowercase + accent-removal) $lg CC-100 dump to $TXT_PATH/${lg}.all ***"
+
 
 # split into train / valid / test
-echo "***  Splitting $CC_PATH/$lg.all into train / valid / test... ***"
+echo "***  Splitting $TXT_PATH/$lg.all into train / valid / test... ***"
 
 split_data() {
     get_seeded_random() {
@@ -65,6 +68,6 @@ split_data() {
     shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5000  > $3;
     shuf --random-source=<(get_seeded_random 42) $1 | tail -5000                > $4;
 }
-split_data $CC_PATH/$lg.all $CC_PATH/$lg.train $CC_PATH/$lg.valid $CC_PATH/$lg.test
+split_data $TXT_PATH/$lg.all $TXT_PATH/$lg.train $TXT_PATH/$lg.valid $TXT_PATH/$lg.test
 
-echo "*** Created splits in $CC_PATH .train, .valid, .test ***"
+echo "*** Created splits in $TXT_PATH .train, .valid, .test ***"

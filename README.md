@@ -62,11 +62,11 @@ tmux attach-session -t bllmpt
 # Note: the tokenization includes lower-casing and accent-removal
 ./get-data-wiki.sh en #  Wiki:
 ./get-data-wiki.sh fr #  Wiki:
-./get-data-wiki.sh tr #  Wiki: in progress (TEST: tmux_tr)
+./get-data-wiki.sh tr #  Wiki: done
 
 ./get-data-cc.sh en #  CC:
-./get-data-cc.sh fr #  CC:
-./get-data-cc.sh tr #  CC: in progress (TEST: tmux_fr)
+./get-data-cc.sh fr #  CC: in progress (tmux_tr)
+./get-data-cc.sh tr #  CC: done
 ```
 
 > if error: `head: unrecognized option '--10000'
@@ -77,8 +77,8 @@ don't forget to adapt $INPATH. Vocab size set to 30'000.
 
 ```bash
 ./generate_bpe.sh en # CC: Wiki:
-./generate_bpe.sh fr # CC: Wiki:
-./generate_bpe.sh tr # CC: Wiki:
+./generate_bpe.sh fr # CC: Wiki: in progress (tmux_fr)
+./generate_bpe.sh tr # CC: Wiki: done
 ```
 
 > learn BPE using xxx codes:
