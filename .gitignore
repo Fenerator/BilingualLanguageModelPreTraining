@@ -127,3 +127,7 @@ dmypy.json
 # /tools
 /data
 /dumped
+
+*.test
+
+tr.all
