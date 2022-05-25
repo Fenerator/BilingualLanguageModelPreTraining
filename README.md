@@ -62,7 +62,7 @@ tmux attach-session -t bllmpt
 # Note: the tokenization includes lower-casing and accent-removal
 ./get-data-wiki.sh en
 ./get-data-wiki.sh fr
-./get-data-wiki.sh tr
+./get-data-wiki.sh tr # cc in progress
 ```
 
 > if error: `head: unrecognized option '--10000'

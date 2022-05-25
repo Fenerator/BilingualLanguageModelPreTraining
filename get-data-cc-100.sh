@@ -32,7 +32,8 @@ wget -c $CC_DUMP_LINK -P $CC_PATH
 echo "Downloaded $CC_DUMP_NAME in $CC_PATH/$CC_DUMP_NAME"
 
 # extract and tokenize CC data
-xz -d -v $lg.txt.xz
+echo "Extracting $CC_PATH/$CC_DUMP_NAME ..."
+xz -d -v $CC_PATH/$CC_DUMP_NAME
 
 cd $MAIN_PATH
 echo "*** Cleaning and tokenizing $lg CC-100 dump ... ***"
