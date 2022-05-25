@@ -61,7 +61,7 @@ tmux attach-session -t bllmpt
 # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
 # Note: the tokenization includes lower-casing and accent-removal
 ./get-data-wiki.sh en #  Wiki:
-./get-data-wiki.sh fr #  Wiki:
+./get-data-wiki.sh fr #  Wiki: in progress (tmux_fr)
 ./get-data-wiki.sh tr #  Wiki: done
 
 ./get-data-cc.sh en #  CC:
@@ -76,9 +76,13 @@ Generate BPE:
 don't forget to adapt $INPATH. Vocab size set to 30'000.
 
 ```bash
-./generate_bpe.sh en # CC: Wiki:
-./generate_bpe.sh fr # CC: Wiki: in progress (tmux_fr)
-./generate_bpe.sh tr # CC: Wiki: done
+./generate_bpe.sh en cc # 
+./generate_bpe.sh fr cc # 
+./generate_bpe.sh tr cc #
+
+./generate_bpe.sh en wiki # 
+./generate_bpe.sh fr wiki # 
+./generate_bpe.sh tr wiki #
 ```
 
 > learn BPE using xxx codes:

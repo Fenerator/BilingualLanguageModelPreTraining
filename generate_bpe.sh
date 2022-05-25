@@ -1,15 +1,14 @@
 #!/bin/bash
-# Usage: ./generate_bpe.sh <LANGUAGE>
+# Usage: ./generate_bpe.sh <LANGUAGE> <dataset folder name>
 
 set -e
 
 lg=$1  # input language
 ds=$2 # dataset folder name
 
-INPATH=/srv/scratch4/tinner/$ds
-#INPATH=data/wiki/txt
-#OUTPATH=data/processed/wiki/XLM_$lg/30k  # path where processed files will be stored
+INPATH=/srv/scratch4/tinner/$ds/txt
 OUTPATH=$INPATH/XLM_$lg_$ds/30k  
+
 FASTBPE=tools/fastBPE/fast  # path to the fastBPE tool
 
 # create output path
@@ -28,7 +27,7 @@ $FASTBPE applybpe $OUTPATH/valid.$lg $INPATH/$lg.valid $OUTPATH/codes &
 echo "*** Applying BPE to $lg test set ... ***"
 $FASTBPE applybpe $OUTPATH/test.$lg $INPATH/$lg.test $OUTPATH/codes &
 
-echo "*** Getting vocabulary for $lg ... ***"
+echo "*** Getting vocabulary for $OUTPATH/train.$lg to be stored at $OUTPATH/vocab ... ***"
 cat $OUTPATH/train.$lg | $FASTBPE getvocab - > $OUTPATH/vocab &
 
 # This will create three files: $OUTPATH/{train,valid,test}.en.pth
