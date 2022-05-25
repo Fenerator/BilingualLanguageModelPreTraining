@@ -60,18 +60,25 @@ tmux attach-session -t bllmpt
 
 # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
 # Note: the tokenization includes lower-casing and accent-removal
-./get-data-wiki.sh en
-./get-data-wiki.sh fr # cc download in progress
-./get-data-wiki.sh tr # cc tokenization is in progress
+./get-data-wiki.sh en #  Wiki:
+./get-data-wiki.sh fr #  Wiki:
+./get-data-wiki.sh tr #  Wiki: in progress (TEST: tmux_tr)
+
+./get-data-cc.sh en #  CC:
+./get-data-cc.sh fr #  CC:
+./get-data-cc.sh tr #  CC: in progress (TEST: tmux_fr)
 ```
 
 > if error: `head: unrecognized option '--10000'
 > Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
 
 Generate BPE:
+don't forget to adapt $INPATH. Vocab size set to 30'000.
 
 ```bash
-./generate_bpe.sh <LANG>
+./generate_bpe.sh en # CC: Wiki:
+./generate_bpe.sh fr # CC: Wiki:
+./generate_bpe.sh tr # CC: Wiki:
 ```
 
 > learn BPE using xxx codes:

@@ -7,7 +7,7 @@
 #
 
 #
-# Usage: ./get-data-wiki.sh $lg
+# Usage: ./get-data-wiki.sh $lg 
 #
 
 set -e
@@ -16,7 +16,7 @@ lg=$1  # input language
 
 # data path
 MAIN_PATH=$PWD
-WIKI_PATH=$PWD/data/wiki
+WIKI_PATH=/srv/scratch4/tinner/wiki
 
 # tools paths
 TOOLS_PATH=$PWD/tools
@@ -69,4 +69,3 @@ split_data() {
     shuf --random-source=<(get_seeded_random 42) $1 | tail -5000                > $4;
 }
 split_data $WIKI_PATH/txt/$lg.all $WIKI_PATH/txt/$lg.train $WIKI_PATH/txt/$lg.valid $WIKI_PATH/txt/$lg.test
-

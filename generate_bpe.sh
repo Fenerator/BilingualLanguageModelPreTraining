@@ -4,8 +4,12 @@
 set -e
 
 lg=$1  # input language
+ds=$2 # dataset folder name
 
-OUTPATH=data/processed/XLM_$lg/30k  # path where processed files will be stored
+INPATH=/srv/scratch4/tinner/$ds
+#INPATH=data/wiki/txt
+#OUTPATH=data/processed/wiki/XLM_$lg/30k  # path where processed files will be stored
+OUTPATH=$INPATH/XLM_$lg_$ds/30k  
 FASTBPE=tools/fastBPE/fast  # path to the fastBPE tool
 
 # create output path
@@ -13,16 +17,16 @@ mkdir -p $OUTPATH
 
 # learn bpe codes on the training set (or only use a subset of it)
 echo "*** Learning BPE for $lg training set ... ***"
-$FASTBPE learnbpe 30000 data/wiki/txt/$lg.train > $OUTPATH/codes
+$FASTBPE learnbpe 30000 $INPATH/$lg.train > $OUTPATH/codes
 
 echo "*** Applying BPE to $lg training set ... ***"
-$FASTBPE applybpe $OUTPATH/train.$lg data/wiki/txt/$lg.train $OUTPATH/codes &
+$FASTBPE applybpe $OUTPATH/train.$lg $INPATH/$lg.train $OUTPATH/codes &
 
 echo "*** Applying BPE to $lg validation set ... ***"
-$FASTBPE applybpe $OUTPATH/valid.$lg data/wiki/txt/$lg.valid $OUTPATH/codes &
+$FASTBPE applybpe $OUTPATH/valid.$lg $INPATH/$lg.valid $OUTPATH/codes &
 
 echo "*** Applying BPE to $lg test set ... ***"
-$FASTBPE applybpe $OUTPATH/test.$lg data/wiki/txt/$lg.test $OUTPATH/codes &
+$FASTBPE applybpe $OUTPATH/test.$lg $INPATH/$lg.test $OUTPATH/codes &
 
 echo "*** Getting vocabulary for $lg ... ***"
 cat $OUTPATH/train.$lg | $FASTBPE getvocab - > $OUTPATH/vocab &
