@@ -11,6 +11,8 @@ lg=$1  # input language
 MAIN_PATH=$PWD
 CC_PATH=$PWD/data/cc-100
 
+mkdir -p $CC_PATH
+
 # tools paths
 TOOLS_PATH=$PWD/tools
 TOKENIZE=$TOOLS_PATH/tokenize.sh
