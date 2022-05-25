@@ -32,7 +32,9 @@ WIKI_DUMP_LINK=https://dumps.wikimedia.org/${lg}wiki/latest/$WIKI_DUMP_NAME
 
 # create Wiki paths
 mkdir -p $WIKI_PATH/bz2
-mkdir -p $WIKI_PATH/txt
+
+TXT_PATH=$WIKI_PATH/txt
+mkdir -p $TXT_PATH
 
 # download Wikipedia dump
 echo "Downloading $lg Wikipedia dump from $WIKI_DUMP_LINK ..."
@@ -42,16 +44,16 @@ echo "Downloaded $WIKI_DUMP_NAME in $WIKI_PATH/bz2/$WIKI_DUMP_NAME"
 # extract and tokenize Wiki data
 cd $MAIN_PATH
 echo "*** Cleaning and tokenizing $lg Wikipedia dump ... ***"
-if [ ! -f $WIKI_PATH/txt/$lg.all ]; then
+if [ ! -f $TXT_PATH/$lg.all ]; then
   python -m wikiextractor.WikiExtractor $WIKI_PATH/bz2/$WIKI_DUMP_NAME --processes 8 -q -o - \
   | sed "/^\s*\$/d" \
   | grep -v "^<doc id=" \
   | grep -v "</doc>\$" \
   | $TOKENIZE $lg \
   | python $LOWER_REMOVE_ACCENT \
-  > $WIKI_PATH/txt/$lg.all
+  > $TXT_PATH/$lg.all
 fi
-echo "*** Tokenized (+ lowercase + accent-removal) $lg Wikipedia dump to $WIKI_PATH/txt/train.${lg} ***"
+echo "*** Tokenized (+ lowercase + accent-removal) $lg Wikipedia dump to $TXT_PATH/train.${lg} ***"
 
 # split into train / valid / test
 echo "*** Split into train / valid / test ***"
@@ -68,4 +70,4 @@ split_data() {
     shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5000  > $3;
     shuf --random-source=<(get_seeded_random 42) $1 | tail -5000                > $4;
 }
-split_data $WIKI_PATH/txt/$lg.all $WIKI_PATH/txt/$lg.train $WIKI_PATH/txt/$lg.valid $WIKI_PATH/txt/$lg.test
+split_data $TXT_PATH/$lg.ra $TXT_PATH/$lg.train $TXT_PATH/$lg.valid $TXT_PATH/$lg.test

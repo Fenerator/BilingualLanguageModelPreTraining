@@ -47,7 +47,13 @@ We use monolingual data consisting of multiple corpora thus we apply the MLM app
 
 create venv, activate
 
-install dependencies:
+install dependencies, apex
+
+```bash
+git clone https://github.com/NVIDIA/apex
+cd apex
+pip install -v --disable-pip-version-check --no-cache-dir ./
+```
 
 ```bash
 pip install -e .
@@ -62,11 +68,11 @@ tmux attach-session -t bllmpt
 # Note: the tokenization includes lower-casing and accent-removal
 ./get-data-wiki.sh en #  Wiki:
 ./get-data-wiki.sh fr #  Wiki: in progress (tmux_fr)
-./get-data-wiki.sh tr #  Wiki: done
+./get-data-wiki.sh tr #  Done 
 
 ./get-data-cc.sh en #  CC:
 ./get-data-cc.sh fr #  CC: in progress (tmux_tr)
-./get-data-cc.sh tr #  CC: done
+./get-data-cc.sh tr #  Done
 ```
 
 > if error: `head: unrecognized option '--10000'
@@ -78,11 +84,11 @@ don't forget to adapt $INPATH. Vocab size set to 30'000.
 ```bash
 ./generate_bpe.sh en cc # 
 ./generate_bpe.sh fr cc # 
-./generate_bpe.sh tr cc #
+./generate_bpe.sh tr cc # Done
 
 ./generate_bpe.sh en wiki # 
 ./generate_bpe.sh fr wiki # 
-./generate_bpe.sh tr wiki #
+./generate_bpe.sh tr wiki # Done
 ```
 
 > learn BPE using xxx codes:
@@ -138,7 +144,7 @@ python train.py
 --mlm_steps 'en,zh'                        # MLM objective
 
 ## transformer parameters
---emb_dim 1024                             # embeddings / model dimension (2048 is big, reduce if only 16Gb of GPU memory)
+--emb_dim 2048                             # embeddings / model dimension (2048 is big, reduce if only 16Gb of GPU memory)
 --n_layers 12                              # number of layers
 --n_heads 16                               # number of heads
 --dropout 0.1                              # dropout
