@@ -61,8 +61,8 @@ tmux attach-session -t bllmpt
 # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
 # Note: the tokenization includes lower-casing and accent-removal
 ./get-data-wiki.sh en
-./get-data-wiki.sh fr
-./get-data-wiki.sh tr # cc in progress
+./get-data-wiki.sh fr # cc download in progress
+./get-data-wiki.sh tr # cc tokenization is in progress
 ```
 
 > if error: `head: unrecognized option '--10000'

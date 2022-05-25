@@ -9,7 +9,8 @@ lg=$1  # input language
 
 # data path
 MAIN_PATH=$PWD
-CC_PATH=$PWD/data/cc-100
+#CC_PATH=$PWD/data/cc-100
+CC_PATH=/srv/scratch4/tinner/cc
 
 mkdir -p $CC_PATH
 
@@ -25,20 +26,23 @@ CC_DUMP_LINK=https://data.statmt.org/cc-100/$CC_DUMP_NAME
 # install tools
 ./install-tools.sh
 
+if [[ ! -f $CC_PATH/$lg.txt ]]
+then
+    # download Wikipedia dump
+    echo "Downloading $lg CC-100 dump from $CC_DUMP_LINK ..."
+    wget -c $CC_DUMP_LINK -P $CC_PATH
+    echo "Downloaded $CC_DUMP_NAME in $CC_PATH/$CC_DUMP_NAME"
 
-# download Wikipedia dump
-echo "Downloading $lg CC-100 dump from $CC_DUMP_LINK ..."
-wget -c $CC_DUMP_LINK -P $CC_PATH
-echo "Downloaded $CC_DUMP_NAME in $CC_PATH/$CC_DUMP_NAME"
+    # extract and tokenize CC data
+    echo "Extracting $CC_PATH/$CC_DUMP_NAME ..."
+    xz -d -v $CC_PATH/$CC_DUMP_NAME
+fi
 
-# extract and tokenize CC data
-echo "Extracting $CC_PATH/$CC_DUMP_NAME ..."
-xz -d -v $CC_PATH/$CC_DUMP_NAME
 
 cd $MAIN_PATH
-echo "*** Cleaning and tokenizing $lg CC-100 dump ... ***"
-if [ ! -f $CC_PATH/$lg.txt ]; then
-    sed '1d' $CC_PATH/$lg.txt |
+if [ ! -f $CC_PATH/$lg.all ]; then
+    echo "*** Cleaning and tokenizing $lg CC-100 dump ... ***"
+    sed '1d' $CC_PATH/$lg.txt \
   | sed "/^\s*\$/d" \
   | grep -v "^<doc id=" \
   | grep -v "</doc>\$" \
