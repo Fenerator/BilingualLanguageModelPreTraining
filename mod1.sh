@@ -16,7 +16,7 @@ ds=$2 # dataset folder name
 INPATH=/srv/scratch4/tinner/$ds/txt
 OUTPATH=$INPATH/XLM/30k_$lg
 
-export CUDA_VISIBLE_DEVICES=5,6
+export CUDA_VISIBLE_DEVICES=4,5,6
 
 python train.py \
     --amp 1 \
@@ -32,7 +32,7 @@ python train.py \
     --dropout 0.1 \
     --attention_dropout 0.1 \
     --gelu_activation true \
-    --batch_size 32 \
+    --batch_size 8 \
     --bptt 256 \
     --optimizer adam,lr=0.0001 \
     --epoch_size 300000 \
