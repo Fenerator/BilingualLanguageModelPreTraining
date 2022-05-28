@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # Copyright (c) 2019-present, Facebook, Inc.
 # All rights reserved.
 #

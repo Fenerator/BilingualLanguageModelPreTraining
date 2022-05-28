@@ -133,3 +133,5 @@ dmypy.json
 tr.all
 
 vocab
+
+test.sh
