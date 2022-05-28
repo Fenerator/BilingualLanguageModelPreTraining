@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 # Copyright (c) 2019-present, Facebook, Inc.
 # All rights reserved.
 #
@@ -16,11 +16,14 @@ lg=$1 # input language
 ds=$2 # dataset folder name
 
 #PATH=/srv/scratch4/tinner/$ds/txt
-TXT_PATH=/mnt/BLLMPT_XLM/BPE/cc_txt/XLM/dummytest #TEST
+TXT_PATH=. #TEST
+FILE=fr.train
+NLINES=$(wc -l $FILE | awk -F " " '{print $1}')
+echo "Lines: $NLINES"
 
-TRAIN_LEN_FR=$(wc -l $TXT_PATH/train.fr | awk -F " " '{print $TXT_PATH/train.fr}')
-TRAIN_LEN_TR=$(wc -l $TXT_PATH/train.tr | awk -F " " '{print $TXT_PATH/train.tr}')
-TRAIN_LEN_EN=$(wc -l $TXT_PATH/train.en | awk -F " " '{print $TXT_PATH/train.en}')
+TRAIN_LEN_FR=$(wc -l $TXT_PATH/fr.train | awk -F " " '{print $1}')
+TRAIN_LEN_TR=$(wc -l $TXT_PATH/tr.train | awk -F " " '{print $1}')
+TRAIN_LEN_EN=$(wc -l $TXT_PATH/en.train | awk -F " " '{print $1}')
 
 echo "n_STRAIN_LEN_FR: $TRAIN_LEN_FR"
 echo "n_STRAIN_LEN_TR: $TRAIN_LEN_TR"
@@ -33,11 +36,12 @@ get_seeded_random() {
 }
 
 # get English partitions equal to the French and Turkish training sets such that we have equal amounts of data for the languages EN-TR and EN-FR
-shuf --random-source=<(get_seeded_random 42) $TXT_PATH/en.train | head -$TRAIN_LEN_FR >$TXT_PATH/en.train_n_fr
-shuf --random-source=<(get_seeded_random 42) $TXT_PATH/en.train | head -$TRAIN_LEN_TR >$TXT_PATH/en.train_n_tr
+shuf --random-source=<(get_seeded_random 42) $TXT_PATH/en.train | head -$TRAIN_LEN_FR >$TXT_PATH/en.train_small_n_fr
+shuf --random-source=<(get_seeded_random 42) $TXT_PATH/en.train | head -$TRAIN_LEN_TR >$TXT_PATH/en.train_small_n_tr
 
-# get size of small partition (same for FR and TR)
-n_SMALL= $(($TRAIN_LEN_EN * 0.0053))
+# get size of small partition (same for FR and TR) 0.53% of EN training set
+n_SMALL=$(python -c 'from sys import argv; res=float(argv[1])*float(0.0053); print(round(res))' "$TRAIN_LEN_EN")
+
 echo "n_SMALL: $n_SMALL"
 
 shuf --random-source=<(get_seeded_random 42) $TXT_PATH/fr.train | head -$n_SMALL >$TXT_PATH/fr.train_small
