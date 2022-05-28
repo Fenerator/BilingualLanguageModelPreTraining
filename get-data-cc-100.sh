@@ -5,7 +5,7 @@
 
 set -e
 
-lg=$1  # input language
+lg=$1 # input language
 
 # data path
 MAIN_PATH=$PWD
@@ -25,8 +25,7 @@ CC_DUMP_LINK=https://data.statmt.org/cc-100/$CC_DUMP_NAME
 # install tools
 ./install-tools.sh
 
-if [[ ! -f $CC_PATH/$lg.txt ]]
-then
+if [[ ! -f $CC_PATH/$lg.txt ]]; then
     # download Wikipedia dump
     echo "Downloading $lg CC-100 dump from $CC_DUMP_LINK ..."
     wget -c $CC_DUMP_LINK -P $CC_PATH
@@ -43,31 +42,30 @@ mkdir -p $TXT_PATH
 cd $MAIN_PATH
 if [ ! -f $TXT_PATH/$lg.all ]; then
     echo "*** Cleaning and tokenizing $lg CC-100 dump ... ***"
-    sed '1d' $CC_PATH/$lg.txt \
-  | sed "/^\s*\$/d" \
-  | grep -v "^<doc id=" \
-  | grep -v "</doc>\$" \
-  | $TOKENIZE $lg \
-  | python $LOWER_REMOVE_ACCENT \
-  > $TXT_PATH/$lg.all
+    sed '1d' $CC_PATH/$lg.txt |
+        sed "/^\s*\$/d" |
+        grep -v "^<doc id=" |
+        grep -v "</doc>\$" |
+        $TOKENIZE $lg |
+        python $LOWER_REMOVE_ACCENT \
+            >$TXT_PATH/$lg.all
 fi
 echo "*** Tokenized (+ lowercase + accent-removal) $lg CC-100 dump to $TXT_PATH/${lg}.all ***"
-
 
 # split into train / valid / test
 echo "***  Splitting $TXT_PATH/$lg.all into train / valid / test... ***"
 
 split_data() {
     get_seeded_random() {
-        seed="$1"; openssl enc -aes-256-ctr -pass pass:"$seed" -nosalt </dev/zero 2>/dev/null
-    };
-    NLINES=`wc -l $1  | awk -F " " '{print $1}'`;
-    NTRAIN=$((NLINES - 10000));
-    NVAL=$((NTRAIN + 5000));
-    shuf --random-source=<(get_seeded_random 42) $1 | head -$NTRAIN             > $2;
-    shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5000  > $3;
-    shuf --random-source=<(get_seeded_random 42) $1 | tail -5000                > $4;
+        seed="$1"
+        openssl enc -aes-256-ctr -pass pass:"$seed" -nosalt </dev/zero 2>/dev/null
+    }
+    NLINES=$(wc -l $1 | awk -F " " '{print $1}')
+    NTRAIN=$((NLINES - 10000))
+    NVAL=$((NTRAIN + 5000))
+    shuf --random-source=<(get_seeded_random 42) $1 | head -$NTRAIN >$2
+    shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5000 >$3
+    shuf --random-source=<(get_seeded_random 42) $1 | tail -5000 >$4
 }
 split_data $TXT_PATH/$lg.all $TXT_PATH/$lg.train $TXT_PATH/$lg.valid $TXT_PATH/$lg.test
-
 echo "*** Created splits in $TXT_PATH .train, .valid, .test ***"

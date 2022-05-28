@@ -7,7 +7,7 @@
 #
 
 #
-# Usage: ./mod1.sh
+# Usage: ./mod1.sh tr wiki tr_test1
 #
 
 lg=$1 # input languages
@@ -26,9 +26,9 @@ python train.py \
     --exp_name $exp_name \
     --dump_path $OUTPATH \
     --data_path $INPATH/ \
-    --lgs 'tr-fr' \
+    --lgs 'tr' \
     --clm_steps '' \
-    --mlm_steps 'tr,fr' \
+    --mlm_steps 'tr' \
     --emb_dim 2048 \
     --n_layers 12 \
     --n_heads 16 \

@@ -13,36 +13,37 @@
 
 ### Languages
 
-1. English
-2. French
-3. Turkish
+1. English: training size CC: WIKI:
+2. French: training size CC : WIKI: 26685413
+3. Turkish: training size CC: 1759580 WIKI:
 
 We need the following partitions of each of the languages above:
 
-- **equal**: proportions to the pre-training material used in XLM-R
+- **small**: proportions to the pre-training material used in XLM-R
 - **large**: use the same amount for both languages
 
 ## Experiments
 
+Test size: 5000 lines, validation size: 5000 lines, rest used as training set
 Recreate proportions of data used in the original pre-training of XLM-R. We substitute SW by FR resp. TR and created datasets that represent the same proportional amount of pre-training data measured in GiB: SW / EN = 0.53%.
 
 Language Model: **EN_FR**
 
-| Ex | Lang. | EN         | FR    |
+| Ex | Data | EN         | FR    |
 |----|-------|------------|-------|
-| 1  | CC    | same as FR | 100%  |
-| 2  | CC    | 100%       | 0.53% |
-| 3  | Wiki  | same as FR | 100%  |
-| 4  | Wiki  | 100%       | 0.53% |
+| 1  | CC    | same size as FR (small) | 100%  |
+| 2  | CC    | 100% full size       | 0.53% of the EN size |
+| 3  | Wiki  | same size as FR (small) | 100%  |
+| 4  | Wiki  | 100% full size       | 0.53% of the EN size |
 
 Language Model: **EN_TR**
 
-| Ex | Lang. | EN         | TR    |
+| Ex | Data | EN         | TR    |
 |----|-------|------------|-------|
-| 5  | CC    | same as TR | 100%  |
-| 6  | CC    | 100%       | 0.53% |
-| 7  | Wiki  | same as TR | 100%  |
-| 8  | Wiki  | 100%       | 0.53% |
+| 1  | CC    | same size as TR (small) | 100%  |
+| 2  | CC    | 100% full size       | 0.53% of the EN size |
+| 3  | Wiki  | same size as TR (small) | 100%  |
+| 4  | Wiki  | 100% full size       | 0.53% of the EN size |
 
 ## Steps to train one XLM Model
 
@@ -82,8 +83,14 @@ We apply the MLM approach only, as we do not have parallel corporas.
     > if error: `head: unrecognized option '--10000'
     > Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
 
-4. Generate BPE:
-    This script learns BPE on the test set, using 30k codes, applys the encoding all partitions of the data, creates the post-BPE vocabulary and binarizes the data.
+4. Generate training partitions
+
+```bash
+./generate_partitions.sh
+```
+
+5. Generate BPE:
+    This script learns BPE on the training set using 30k codes, applys the encoding to all partitions of the data, creates the post-BPE vocabulary, and binarizes the data.
 
     Don't forget to adapt `$INPATH`. Vocab size set to 30'000.
 
@@ -97,7 +104,9 @@ We apply the MLM approach only, as we do not have parallel corporas.
     ./generate_bpe.sh tr wiki # Done
     ```
 
-5. Train the model:
+5. Move all files into one required folder:
+
+6. Train the model:
 
     ```bash
     python train.py

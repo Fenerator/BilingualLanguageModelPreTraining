@@ -19,7 +19,7 @@ echo "*** Learning BPE for $lg training set storing in $OUTPATH/codes.$lg... ***
 $FASTBPE learnbpe 30000 $INPATH/$lg.train >$OUTPATH/codes.$lg
 
 echo "*** Applying BPE to $lg training set ... ***"
-$FASTBPE applybpe $OUTPATH/train.$lg $INPATH/$lg.train $OUTPATH/codes.$lg
+$FASTBPE applybpe $OUTPATH/train.$lg $INPATH/$lg.train $OUTPATH/codes.$lg #FULL Dateset
 
 echo "*** Applying BPE to $lg validation set ... ***"
 $FASTBPE applybpe $OUTPATH/valid.$lg $INPATH/$lg.valid $OUTPATH/codes.$lg
@@ -30,7 +30,7 @@ $FASTBPE applybpe $OUTPATH/test.$lg $INPATH/$lg.test $OUTPATH/codes.$lg
 echo "*** Getting vocabulary for $OUTPATH/train.$lg to be stored at $OUTPATH/vocab.$lg ... ***"
 cat $OUTPATH/train.$lg | $FASTBPE getvocab - >$OUTPATH/vocab.$lg
 
-# This will create three files: $OUTPATH/{train,valid,test}.en.pth
+# This will create three files: $OUTPATH/{train,valid,test}.$lg.pth
 # After that we're all set
 
 echo "*** Preprocessing vocabulary for $lg training set ... ***"
