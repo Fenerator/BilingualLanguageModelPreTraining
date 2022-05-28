@@ -10,22 +10,25 @@
 # Usage: ./mod1.sh
 #
 
-lg=$1 # input language
-ds=$2 # dataset folder name
+lg=$1 # input languages
+ds=$2 # dataset folder name e.g. wiki
+exp_name=$3
 
-INPATH=/srv/scratch4/tinner/$ds/txt
-OUTPATH=$INPATH/XLM/30k_$lg
+INPATH=/srv/scratch4/tinner/$ds/txt/XLM/30k_$lg #e.g. #e.g. /srv/scratch4/tinner/wiki/txt/XLM/30k_fr_tr
+OUTPATH=$INPATH/xlm_out_$lg                     #_$lg
+
+mkdir -p $OUTPATH
 
 export CUDA_VISIBLE_DEVICES=4,5,6
 
 python train.py \
     --amp 1 \
-    --exp_name xlm_tr_test1 \
-    --dump_path ./dumped \
-    --data_path $OUTPATH/ \
-    --lgs 'tr' \
+    --exp_name $exp_name \
+    --dump_path $OUTPATH \
+    --data_path $INPATH/ \
+    --lgs 'tr-fr' \
     --clm_steps '' \
-    --mlm_steps 'tr' \
+    --mlm_steps 'tr,fr' \
     --emb_dim 2048 \
     --n_layers 12 \
     --n_heads 16 \
