@@ -86,7 +86,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
 4. Generate training partitions
 
 ```bash
-./generate_partitions.sh
+./generate-training-partitions.sh <dataset>
 ```
 
 5. Generate BPE:
@@ -104,9 +104,14 @@ We apply the MLM approach only, as we do not have parallel corporas.
     ./generate_bpe.sh tr wiki # Done
     ```
 
-5. Move all files into one required folder:
+6. Move all files into one required folder:
 
-6. Train the model:
+    ```bash
+    ...
+    ```
+
+7. Train the model:
+required files in the directory of `OUTPATH`: ...
 
     ```bash
     python train.py

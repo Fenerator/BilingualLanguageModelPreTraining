@@ -12,7 +12,7 @@
 
 set -e
 
-ds=$2 # dataset folder name
+ds=$1 # dataset folder name
 
 TXT_PATH=/srv/scratch4/tinner/$ds/txt
 

@@ -21,7 +21,6 @@ $FASTBPE learnbpe 30000 $INPATH/$lg.train >$OUTPATH/codes.$lg
 echo "*** Applying BPE to $lg training set ... ***"
 $FASTBPE applybpe $OUTPATH/train.$lg $INPATH/$lg.train $OUTPATH/codes.$lg #FULL Dateset
 
-echo "*** Applying BPE to $lg smaller training set ... ***"
 if [ $lg==en ]; then
     echo "*** Applying BPE to $lg smaller training set of $lg ... ***"
     $FASTBPE applybpe $OUTPATH/train_small_n_fr.$lg $INPATH/$lg.train_small_n_fr $OUTPATH/codes.$lg #FULL Dateset
@@ -74,3 +73,5 @@ if [ $lg==en ]; then
     python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/train_small_n_fr.$lg
     python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/train_small_n_tr.$lg
 fi
+
+#new
