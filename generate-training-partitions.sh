@@ -7,19 +7,14 @@
 #
 
 #
-# Usage: ./generate-training-partitions.sh lang dataset
+# Usage: ./generate-training-partitions.sh <dataset>
 #
 
 set -e
 
-lg=$1 # input language
 ds=$2 # dataset folder name
 
-#PATH=/srv/scratch4/tinner/$ds/txt
-TXT_PATH=. #TEST
-FILE=fr.train
-NLINES=$(wc -l $FILE | awk -F " " '{print $1}')
-echo "Lines: $NLINES"
+TXT_PATH=/srv/scratch4/tinner/$ds/txt
 
 TRAIN_LEN_FR=$(wc -l $TXT_PATH/fr.train | awk -F " " '{print $1}')
 TRAIN_LEN_TR=$(wc -l $TXT_PATH/tr.train | awk -F " " '{print $1}')
