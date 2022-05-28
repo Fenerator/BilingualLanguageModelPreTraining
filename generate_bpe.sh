@@ -23,15 +23,18 @@ $FASTBPE applybpe $OUTPATH/train.$lg $INPATH/$lg.train $OUTPATH/codes.$lg #FULL 
 
 echo "*** Applying BPE to $lg smaller training set ... ***"
 if [ $lg==en ]; then
+    echo "*** Applying BPE to $lg smaller training set of $lg ... ***"
     $FASTBPE applybpe $OUTPATH/train_small_n_fr.$lg $INPATH/$lg.train_small_n_fr $OUTPATH/codes.$lg #FULL Dateset
     $FASTBPE applybpe $OUTPATH/train_small_n_tr.$lg $INPATH/$lg.train_small_n_tr $OUTPATH/codes.$lg #FULL Dateset
 fi
 
 if [ $lg==fr ]; then
+    echo "*** Applying BPE to $lg smaller training set of $lg ... ***"
     $FASTBPE applybpe $OUTPATH/train_small.$lg $INPATH/$lg.train_small $OUTPATH/codes.$lg #FULL Dateset
 fi
 
 if [ $lg==tr ]; then
+    echo "*** Applying BPE to $lg smaller training set of $lg ... ***"
     $FASTBPE applybpe $OUTPATH/train_small.$lg $INPATH/$lg.train_small $OUTPATH/codes.$lg #FULL Dateset
 fi
 
