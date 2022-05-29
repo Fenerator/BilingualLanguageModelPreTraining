@@ -10,12 +10,13 @@
 # Usage: ./mod1.sh tr wiki tr_test1
 #
 
-lg=$1 # input languages
-ds=$2 # dataset folder name e.g. wiki
-exp_name=$3
+ds=$1       # dataset folder name e.g. wiki
+lgs=$2      # input languages
+mlm=$3      # mlm steps
+exp_name=$4 # e.g. ex1
 
-INPATH=/srv/scratch4/tinner/$ds/txt/XLM/30k_$lg #e.g. #e.g. /srv/scratch4/tinner/wiki/txt/XLM/30k_fr_tr
-OUTPATH=$INPATH/xlm_out_$lg                     #_$lg
+INPATH=/srv/scratch4/tinner/$ds/txt/XLM/$exp_name # was PATH before
+OUTPATH=$INPATH/xlm_out
 
 mkdir -p $OUTPATH
 
@@ -26,9 +27,9 @@ python train.py \
     --exp_name $exp_name \
     --dump_path $OUTPATH \
     --data_path $INPATH/ \
-    --lgs 'tr' \
+    --lgs $lgs \
     --clm_steps '' \
-    --mlm_steps 'tr' \
+    --mlm_steps $mlm \
     --emb_dim 2048 \
     --n_layers 12 \
     --n_heads 16 \

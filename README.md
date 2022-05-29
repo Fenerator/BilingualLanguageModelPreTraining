@@ -40,10 +40,10 @@ Language Model: **EN_TR**
 
 | Ex | Data | EN         | TR    |
 |----|-------|------------|-------|
-| 1  | CC    | same size as TR (small) | 100%  |
-| 2  | CC    | 100% full size       | 0.53% of the EN size |
-| 3  | Wiki  | same size as TR (small) | 100%  |
-| 4  | Wiki  | 100% full size       | 0.53% of the EN size |
+| 5  | CC    | same size as TR (small) | 100%  |
+| 6  | CC    | 100% full size       | 0.53% of the EN size (small) |
+| 7  | Wiki  | same size as TR (small) | 100%  |
+| 8  | Wiki  | 100% full size       | 0.53% of the EN size |
 
 ## Steps to train one XLM Model
 
@@ -107,7 +107,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
 6. Move all files into one file required for one experiment:
 
     ```bash
-    ...
+    ./generate_XLM_training_data.sh <data>
     ```
 
 7. Train the model:
