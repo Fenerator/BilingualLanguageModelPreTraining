@@ -21,20 +21,20 @@ $FASTBPE learnbpe 30000 $INPATH/$lg.train >$OUTPATH/codes.$lg
 echo "*** Applying BPE to $lg training set ... ***"
 $FASTBPE applybpe $OUTPATH/train.$lg $INPATH/$lg.train $OUTPATH/codes.$lg #FULL Dateset
 
-if [ $lg==en ]; then
+if [ $lg == en ]; then
     echo "*** Applying BPE to $lg smaller training set of $lg ... ***"
-    $FASTBPE applybpe $OUTPATH/train_small_n_fr.$lg $INPATH/$lg.train_small_n_fr $OUTPATH/codes.$lg #FULL Dateset
-    $FASTBPE applybpe $OUTPATH/train_small_n_tr.$lg $INPATH/$lg.train_small_n_tr $OUTPATH/codes.$lg #FULL Dateset
+    $FASTBPE applybpe $OUTPATH/train_small_n_fr.$lg $INPATH/$lg.train_small_n_fr $OUTPATH/codes.$lg
+    $FASTBPE applybpe $OUTPATH/train_small_n_tr.$lg $INPATH/$lg.train_small_n_tr $OUTPATH/codes.$lg
 fi
 
-if [ $lg==fr ]; then
+if [ $lg == fr ]; then
     echo "*** Applying BPE to $lg smaller training set of $lg ... ***"
-    $FASTBPE applybpe $OUTPATH/train_small.$lg $INPATH/$lg.train_small $OUTPATH/codes.$lg #FULL Dateset
+    $FASTBPE applybpe $OUTPATH/train_small.$lg $INPATH/$lg.train_small $OUTPATH/codes.$lg
 fi
 
-if [ $lg==tr ]; then
+if [ $lg == tr ]; then
     echo "*** Applying BPE to $lg smaller training set of $lg ... ***"
-    $FASTBPE applybpe $OUTPATH/train_small.$lg $INPATH/$lg.train_small $OUTPATH/codes.$lg #FULL Dateset
+    $FASTBPE applybpe $OUTPATH/train_small.$lg $INPATH/$lg.train_small $OUTPATH/codes.$lg
 fi
 
 echo "*** Applying BPE to $lg validation set ... ***"
@@ -58,20 +58,18 @@ python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/valid.$lg
 echo "*** Preprocessing vocabulary for $lg test set ... ***"
 python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/test.$lg
 
-if [ $lg==tr ]; then
+if [ $lg == tr ]; then
     echo "*** Preprocessing vocabulary for $lg small training set ... ***"
     python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/train_small.$lg
 fi
 
-if [ $lg==fr ]; then
+if [ $lg == fr ]; then
     echo "*** Preprocessing vocabulary for $lg small training set ... ***"
     python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/train_small.$lg
 fi
 
-if [ $lg==en ]; then
+if [ $lg == en ]; then
     echo "*** Preprocessing vocabulary for $lg small training set ... ***"
     python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/train_small_n_fr.$lg
     python preprocess.py $OUTPATH/vocab.$lg $OUTPATH/train_small_n_tr.$lg
 fi
-
-#new

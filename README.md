@@ -83,7 +83,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
     > if error: `head: unrecognized option '--10000'
     > Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
 
-4. Generate training partitions
+4. Generate training partitions (smaller subsesets)
 
 ```bash
 ./generate-training-partitions.sh <dataset>
@@ -104,7 +104,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
     ./generate_bpe.sh tr wiki # Done
     ```
 
-6. Move all files into one required folder:
+6. Move all files into one file required for one experiment:
 
     ```bash
     ...
