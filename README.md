@@ -111,7 +111,10 @@ We apply the MLM approach only, as we do not have parallel corporas.
     ```
 
 7. Train the model:
-required files in the directory of `OUTPATH`: ...
+
+    ```bash
+    ./mod1.sh <><><><><>
+    ```
 
     ```bash
     python train.py
