@@ -83,7 +83,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
     > if error: `head: unrecognized option '--10000'
     > Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
 
-4. Generate training partitions (smaller subsesets)
+4. Generate training partition for each experiment, mix the two languages together
 
 ```bash
 ./generate-training-partitions.sh <dataset>
