@@ -16,6 +16,15 @@ ds=$1 # dataset folder name
 
 TXT_PATH=/srv/scratch4/tinner/$ds/txt
 
+# create combined training sets for shared bpe vocabulary
+echo "Combining en and tr training datasets as $TXT_PATH/en_tr.train..."
+shuf -r $TXT_PATH/train.en >>$OUTPATH/en_tr.train
+shuf -r $INPATH/train.tr >>$OUTPATH/en_tr.train
+
+echo "Combining en and fr training datasets as $TXT_PATH/en_fr.train..."
+shuf -r $TXT_PATH/train.en >>$OUTPATH/en_fr.train
+shuf -r $INPATH/train.fr >>$OUTPATH/en_fr.train
+
 TRAIN_LEN_FR=$(wc -l $TXT_PATH/fr.train | awk -F " " '{print $1}')
 TRAIN_LEN_TR=$(wc -l $TXT_PATH/tr.train | awk -F " " '{print $1}')
 TRAIN_LEN_EN=$(wc -l $TXT_PATH/en.train | awk -F " " '{print $1}')

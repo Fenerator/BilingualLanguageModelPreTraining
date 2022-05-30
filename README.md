@@ -64,20 +64,20 @@ We apply the MLM approach only, as we do not have parallel corporas.
     pip install -e .
     ```
 
-3. Download and tokenize the data:
+3. Download and tokenize the data: into wiki/txt or cc/txt
 
     ```bash
     tmux attach-session -t bllmpt
 
     # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
     # Note: the tokenization includes lower-casing and accent-removal
-    ./get-data-wiki.sh en #  Wiki:
-    ./get-data-wiki.sh fr #  Done
-    ./get-data-wiki.sh tr #  Done 
+    ./get-data-wiki.sh en 
+    ./get-data-wiki.sh fr 
+    ./get-data-wiki.sh tr  
 
-    ./get-data-cc.sh en #  CC:
-    ./get-data-cc.sh fr #  Done
-    ./get-data-cc.sh tr #  Done
+    ./get-data-cc.sh en 
+    ./get-data-cc.sh fr 
+    ./get-data-cc.sh tr 
     ```
 
     > if error: `head: unrecognized option '--10000'
@@ -90,9 +90,13 @@ We apply the MLM approach only, as we do not have parallel corporas.
 ```
 
 5. Generate BPE:
-    This script learns BPE on the training set using 30k codes, applys the encoding to all partitions of the data, creates the post-BPE vocabulary, and binarizes the data.
+    This script learns BPE on the training set of the respective two languages using 30k codes, applys the encoding to all partitions of the data, creates the post-BPE vocabulary, and binarizes the data.
 
     Don't forget to adapt `$INPATH`. Vocab size set to 30'000.
+
+    OUTPATH changed to: `OUTPATH=/srv/scratch4/tinner/$ds/processed/$lm`
+
+    `codes` and `vocab` are not anymore language specific.
 
     ```bash
     ./generate_bpe.sh en cc # 

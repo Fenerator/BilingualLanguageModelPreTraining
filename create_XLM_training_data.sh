@@ -6,7 +6,17 @@
 # LICENSE file in the root directory of this source tree.
 
 # Experiments on CC data
+# usage: ./create_XLM_training_data.sh <language model> <dataset>
+
 PATH=/srv/scratch4/tinner/CC/txt/XLM
+
+lm = $1
+ds = cc
+PATH=/srv/scratch4/tinner/$ds/processed/$lm # TODO: NEW, was OUTPATH named before.
+
+OUT_PATH=/srv/scratch4/tinner/lm_training_material
+mkdir -p $OUT_PATH/ex1
+...
 
 #/30k_tr, fr, en
 mkdir -p $PATH/ex1
