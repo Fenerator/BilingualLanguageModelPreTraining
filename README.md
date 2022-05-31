@@ -112,7 +112,10 @@ We apply the MLM approach only, as we do not have parallel corporas.
 6. Move all files into one folder required for one experiment and rename the files inside:
 
     ```bash
-    ./create_XLM_training_data.sh <dataset> <lm pair>
+    ./create_XLM_training_data.sh wiki en_fr
+    ./create_XLM_training_data.sh wiki en_tr
+    ./create_XLM_training_data.sh cc en_fr
+    ./create_XLM_training_data.sh cc en_tr
     ```
 
 7. Train the model:
