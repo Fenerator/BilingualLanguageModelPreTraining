@@ -6,213 +6,72 @@
 # LICENSE file in the root directory of this source tree.
 
 # Experiments on CC data
-# usage: ./create_XLM_training_data.sh <language model> <dataset>
+# usage: ./create_XLM_training_data.sh  <dataset> <language model>
 
-PATH=/srv/scratch4/tinner/CC/txt/XLM
+set -e
 
-lm = $1
-ds = cc
-PATH=/srv/scratch4/tinner/$ds/processed/$lm # TODO: NEW, was OUTPATH named before.
+ds=$1
+lm=$2
 
-OUT_PATH=/srv/scratch4/tinner/lm_training_material
-mkdir -p $OUT_PATH/ex1
-...
+INPATH=/srv/scratch4/tinner/test/$ds/processed/$lm
+OUTPATH=/srv/scratch4/tinner/test
 
-#/30k_tr, fr, en
-mkdir -p $PATH/ex1
-mkdir -p $PATH/ex2
-mkdir -p $PATH/ex5
-mkdir -p $PATH/ex6
+# create directories for each experiment and fill them with symbolic links
+if [ $lm == en_fr ]; then
+    mkdir -p $OUTPATH/ex1_$ds
+    mkdir -p $OUTPATH/ex2_$ds
 
-# TODO: renaiming!! of the training sets!
-# Ex 1
-# FR
-exp = ex1
-LANG_1 = fr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp      #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/train.$LANG_1 $PATH/$exp     #full size
-cp $PATH/30k_$LANG_1/train.$LANG_1.pth $PATH/$exp #full size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp                 #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp             #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp            #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/train_small_n_fr.$LANG_2 $PATH/$exp     #same as fr size
-cp $PATH/30k_$LANG_2/train_small_n_fr.$LANG_2.pth $PATH/$exp #same as fr size
+    for exp in ex1_$ds ex2_$ds; do
+        ln -s $INPATH/codes $OUTPATH/$exp/codes
+        ln -s $INPATH/vocab $OUTPATH/$exp/vocab
 
-# Ex 2
-# FR
-exp = ex2
-LANG_1 = fr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp            #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp        #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp       #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/train_small.$LANG_1 $PATH/$exp     #small size
-cp $PATH/30k_$LANG_1/train_small.$LANG_1.pth $PATH/$exp #small size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp      #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/train.$LANG_2 $PATH/$exp     # full size
-cp $PATH/30k_$LANG_2/train.$LANG_2.pth $PATH/$exp # full size
+        for lg in $(echo $lm | sed -e 's/\_/ /g'); do
+            ln -s $INPATH/test.$lg $OUTPATH/$exp/test.$lg
+            ln -s $INPATH/test.$lg.pth $OUTPATH/$exp/test.$lg.pth
+            ln -s $INPATH/valid.$lg $OUTPATH/$exp/valid.$lg
+            ln -s $INPATH/valid.$lg.pth $OUTPATH/$exp/valid.$lg.pth
+        done
+    done
 
-# Ex 5
-# TR
-exp = ex5
-LANG_1 = tr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp      #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/train.$LANG_1 $PATH/$exp     #full size
-cp $PATH/30k_$LANG_1/train.$LANG_1.pth $PATH/$exp #full size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp                 #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp             #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp            #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/train_small_n_tr.$LANG_2 $PATH/$exp     #same as tr size
-cp $PATH/30k_$LANG_2/train_small_n_tr.$LANG_2.pth $PATH/$exp #same as tr size
+    # individual for ex1
+    ln -s $INPATH/train_small_n_fr.en $OUTPATH/ex1_$ds/train.en
+    ln -s $INPATH/train_small_n_fr.en.pth $OUTPATH/ex1_$ds/train.en.pth
+    ln -s $INPATH/train.fr $OUTPATH/ex1_$ds/train.fr
+    ln -s $INPATH/train.fr.pth $OUTPATH/ex1_$ds/train.fr.pth
 
-# Ex 6
-# TR
-exp = ex6
-LANG_1 = tr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp            #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp        #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp       #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/train_small.$LANG_1 $PATH/$exp     #small size
-cp $PATH/30k_$LANG_1/train_small.$LANG_1.pth $PATH/$exp #small size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp      #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/train.$LANG_2 $PATH/$exp     # full size
-cp $PATH/30k_$LANG_2/train.$LANG_2.pth $PATH/$exp # full size
+    # individual for ex2
+    ln -s $INPATH/train.en $OUTPATH/ex2_$ds/train.en
+    ln -s $INPATH/train.en.pth $OUTPATH/ex2_$ds/train.en.pth
+    ln -s $INPATH/train_small.fr $OUTPATH/ex2_$ds/train.fr
+    ln -s $INPATH/train_small.fr.pth $OUTPATH/ex2_$ds/train.fr.pth
 
-# Experiments on WIKI data
-PATH=/srv/scratch4/tinner/wiki/txt/XLM
+fi
 
-mkdir -p $PATH/ex3
-mkdir -p $PATH/ex4
-mkdir -p $PATH/ex7
-mkdir -p $PATH/ex8
+if [ $lm == en_tr ]; then
+    mkdir -p $OUTPATH/ex3_$ds
+    mkdir -p $OUTPATH/ex4_$ds
 
-# Ex 3
-# FR
-exp = ex3
-LANG_1 = fr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp      #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/train.$LANG_1 $PATH/$exp     #full size
-cp $PATH/30k_$LANG_1/train.$LANG_1.pth $PATH/$exp #full size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp                 #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp             #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp            #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/train_small_n_fr.$LANG_2 $PATH/$exp     #same as fr size
-cp $PATH/30k_$LANG_2/train_small_n_fr.$LANG_2.pth $PATH/$exp #same as fr size
+    for exp in ex3_$ds ex4_$ds; do
+        ln -s $INPATH/codes $OUTPATH/$exp/codes
+        ln -s $INPATH/vocab $OUTPATH/$exp/vocab
 
-# Ex 4
-# FR
-exp = ex4
-LANG_1 = fr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp            #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp        #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp       #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/train_small.$LANG_1 $PATH/$exp     #small size
-cp $PATH/30k_$LANG_1/train_small.$LANG_1.pth $PATH/$exp #small size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp      #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/train.$LANG_2 $PATH/$exp     # full size
-cp $PATH/30k_$LANG_2/train.$LANG_2.pth $PATH/$exp # full size
+        for lg in $(echo $lm | sed -e 's/\_/ /g'); do
+            ln -s $INPATH/test.$lg $OUTPATH/$exp/test.$lg
+            ln -s $INPATH/test.$lg.pth $OUTPATH/$exp/test.$lg.pth
+            ln -s $INPATH/valid.$lg $OUTPATH/$exp/valid.$lg
+            ln -s $INPATH/valid.$lg.pth $OUTPATH/$exp/valid.$lg.pth
+        done
+    done
 
-# Ex 7
-# TR
-exp = ex7
-LANG_1 = tr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp      #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp     #always
-cp $PATH/30k_$LANG_1/train.$LANG_1 $PATH/$exp     #full size
-cp $PATH/30k_$LANG_1/train.$LANG_1.pth $PATH/$exp #full size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp                 #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp             #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp            #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp                #always
-cp $PATH/30k_$LANG_2/train_small_n_tr.$LANG_2 $PATH/$exp     #same as tr size
-cp $PATH/30k_$LANG_2/train_small_n_tr.$LANG_2.pth $PATH/$exp #same as tr size
+    # individual for ex3
+    ln -s $INPATH/train_small_n_tr.en $OUTPATH/ex3_$ds/train.en
+    ln -s $INPATH/train_small_n_tr.en.pth $OUTPATH/ex3_$ds/train.en.pth
+    ln -s $INPATH/train.tr $OUTPATH/ex3_$ds/train.tr
+    ln -s $INPATH/train.tr.pth $OUTPATH/ex3_$ds/train.tr.pth
 
-# Ex 8
-# TR
-exp = ex8
-LANG_1 = tr
-cp $PATH/30k_$LANG_1/codes.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/test.$LANG_1 $PATH/$exp            #always
-cp $PATH/30k_$LANG_1/test.$LANG_1.pth $PATH/$exp        #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/valid.$LANG_1.pth $PATH/$exp       #always
-cp $PATH/30k_$LANG_1/vocab.$LANG_1 $PATH/$exp           #always
-cp $PATH/30k_$LANG_1/train_small.$LANG_1 $PATH/$exp     #small size
-cp $PATH/30k_$LANG_1/train_small.$LANG_1.pth $PATH/$exp #small size
-# EN
-LANG_2 = en
-cp $PATH/30k_$LANG_2/codes.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/test.$LANG_2 $PATH/$exp      #always
-cp $PATH/30k_$LANG_2/test.$LANG_2.pth $PATH/$exp  #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/valid.$LANG_2.pth $PATH/$exp #always
-cp $PATH/30k_$LANG_2/vocab.$LANG_2 $PATH/$exp     #always
-cp $PATH/30k_$LANG_2/train.$LANG_2 $PATH/$exp     # full size
-cp $PATH/30k_$LANG_2/train.$LANG_2.pth $PATH/$exp # full size
+    # individual for ex4
+    ln -s $INPATH/train.en $OUTPATH/ex4_$ds/train.en
+    ln -s $INPATH/train.en.pth $OUTPATH/ex4_$ds/train.en.pth
+    ln -s $INPATH/train_small.tr $OUTPATH/ex4_$ds/train.tr
+    ln -s $INPATH/train_small.tr.pth $OUTPATH/ex4_$ds/train.tr.pth
+fi

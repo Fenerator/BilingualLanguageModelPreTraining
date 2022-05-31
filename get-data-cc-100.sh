@@ -9,8 +9,8 @@ lg=$1 # input language
 
 # data path
 MAIN_PATH=$PWD
-CC_PATH=/srv/scratch4/tinner/cc
-
+#CC_PATH=/srv/scratch4/tinner/cc
+CC_PATH=/srv/scratch4/tinner/test/cc
 mkdir -p $CC_PATH
 
 # tools paths
@@ -61,11 +61,13 @@ split_data() {
         openssl enc -aes-256-ctr -pass pass:"$seed" -nosalt </dev/zero 2>/dev/null
     }
     NLINES=$(wc -l $1 | awk -F " " '{print $1}')
-    NTRAIN=$((NLINES - 10000))
-    NVAL=$((NTRAIN + 5000))
+    echo NLINES: $NLINES
+    ####NTRAIN=$((NLINES - 10000))
+    NTRAIN=$((NLINES - 10))
+    NVAL=$((NTRAIN + 5))
     shuf --random-source=<(get_seeded_random 42) $1 | head -$NTRAIN >$2
-    shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5000 >$3
-    shuf --random-source=<(get_seeded_random 42) $1 | tail -5000 >$4
+    shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5 >$3
+    shuf --random-source=<(get_seeded_random 42) $1 | tail -5 >$4
 }
 split_data $TXT_PATH/$lg.all $TXT_PATH/$lg.train $TXT_PATH/$lg.valid $TXT_PATH/$lg.test
 echo "*** Created splits in $TXT_PATH .train, .valid, .test ***"

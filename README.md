@@ -29,21 +29,21 @@ Recreate proportions of data used in the original pre-training of XLM-R. We subs
 
 Language Model: **EN_FR**
 
-| Ex | Data | EN         | FR    |
+| Ex # | Data | EN         | FR    |
 |----|-------|------------|-------|
-| 1  | CC    | same size as FR (small) | 100%  |
-| 2  | CC    | 100% full size       | 0.53% of the EN size |
-| 3  | Wiki  | same size as FR (small) | 100%  |
-| 4  | Wiki  | 100% full size       | 0.53% of the EN size |
+| 1_CC  | CC    | same size as FR (train_small_n_fr.en) | 100%  |
+| 2_CC  | CC    | 100% full size       | 0.53% of the EN size (train_small) |
+| 1_wiki  | Wiki  | same size as FR (small) | 100%  |
+| 2_wiki  | Wiki  | 100% full size       | 0.53% of the EN size (train_small) |
 
 Language Model: **EN_TR**
 
-| Ex | Data | EN         | TR    |
+| Ex # | Data | EN         | TR    |
 |----|-------|------------|-------|
-| 5  | CC    | same size as TR (small) | 100%  |
-| 6  | CC    | 100% full size       | 0.53% of the EN size (small) |
-| 7  | Wiki  | same size as TR (small) | 100%  |
-| 8  | Wiki  | 100% full size       | 0.53% of the EN size |
+| 3_CC  | CC    | same size as TR (small) | 100%  |
+| 4_CC  | CC    | 100% full size       | 0.53% of the EN size (small) |
+| 3_wiki | Wiki  | same size as TR (small) | 100%  |
+| 4_wiki  | Wiki  | 100% full size       | 0.53% of the EN size |
 
 ## Steps to train one XLM Model
 
@@ -64,29 +64,32 @@ We apply the MLM approach only, as we do not have parallel corporas.
     pip install -e .
     ```
 
-3. Download and tokenize the data: into wiki/txt or cc/txt
+3. Download and tokenize the data: generates splits in the txt folder.
 
     ```bash
     tmux attach-session -t bllmpt
 
     # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
     # Note: the tokenization includes lower-casing and accent-removal
-    ./get-data-wiki.sh en 
+    ./get-data-wiki.sh en # TODO change numbers back
     ./get-data-wiki.sh fr 
     ./get-data-wiki.sh tr  
 
-    ./get-data-cc.sh en 
-    ./get-data-cc.sh fr 
-    ./get-data-cc.sh tr 
+    ./get-data-cc-100.sh en 
+    ./get-data-cc-100.sh fr 
+    ./get-data-cc-100.sh tr 
     ```
 
     > if error: `head: unrecognized option '--10000'
     > Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
 
-4. Generate training partition for each experiment, mix the two languages together
+4. Generate bilingual training datasets and dataset of smaller sizes. All files are stored in the `txt` folder. Requires training files of all languages to be downloaded.
 
 ```bash
-./generate-training-partitions.sh <dataset>
+./generate-training-partitions.sh wiki en_fr
+./generate-training-partitions.sh wiki en_tr
+./generate-training-partitions.sh cc en_fr
+./generate-training-partitions.sh cc en_tr
 ```
 
 5. Generate BPE:
@@ -96,22 +99,20 @@ We apply the MLM approach only, as we do not have parallel corporas.
 
     OUTPATH changed to: `OUTPATH=/srv/scratch4/tinner/$ds/processed/$lm`
 
-    `codes` and `vocab` are not anymore language specific.
+    `codes` and `vocab` are not anymore language specific. 30000 was chosen as vocabulary size.
 
     ```bash
-    ./generate_bpe.sh en cc # 
-    ./generate_bpe.sh fr cc # bllmpt-7 done
-    ./generate_bpe.sh tr cc # Done
+    ./generate_bpe.sh cc en_fr <vocabulary size> 
+    ./generate_bpe.sh cc en_tr  <vocabulary size> 
 
-    ./generate_bpe.sh en wiki # 
-    ./generate_bpe.sh fr wiki #  bllmpt_fr done
-    ./generate_bpe.sh tr wiki # Done
+    ./generate_bpe.sh wiki en_fr <vocabulary size> 
+    ./generate_bpe.sh wiki en_tr <vocabulary size> 
     ```
 
-6. Move all files into one file required for one experiment:
+6. Move all files into one folder required for one experiment and rename the files inside:
 
     ```bash
-    ./generate_XLM_training_data.sh <data>
+    ./create_XLM_training_data.sh <dataset> <lm pair>
     ```
 
 7. Train the model:
