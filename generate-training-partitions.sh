@@ -7,15 +7,17 @@
 #
 
 #
-# Usage: ./generate-training-partitions.sh <dataset> <lm pairs>
+# Usage: ./generate-training-partitions.sh <dataset> <lm pairs> <data path>
 #
 
 set -e
 
 ds=$1 # dataset folder name
 lm=$2 # lm pairs, e.g. en_tr or en_fr
+DATA_PATH=$3
 
-TXT_PATH=/srv/scratch4/tinner/test/$ds/txt
+TXT_PATH=$DATA_PATH/$ds/txt
+#TXT_PATH=/srv/scratch4/tinner/test/$ds/txt
 
 # create combined training sets for shared bpe vocabulary
 for lg in $(echo $lm | sed -e 's/\_/ /g'); do

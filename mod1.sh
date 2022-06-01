@@ -6,16 +6,18 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+# EN FR LM
+# Usage: ./mod1.sh <experiment name> <experiment data>
 #
-# Usage: ./mod1.sh tr wiki tr_test1
-#
-
+set -e
 #ds=$1       # dataset folder name e.g. wiki
 #lgs=$2      # input languages
 #mlm=$3      # mlm steps
 exp_name=$1 # e.g. ex1_wiki
 
-INPATH=/srv/scratch4/tinner/test/ex1_wiki
+INPATH=$2
+#INPATH=/srv/scratch4/tinner/test/ex1_wiki
+
 OUTPATH=$INPATH/xlm_out
 
 mkdir -p $OUTPATH

@@ -6,15 +6,16 @@
 # LICENSE file in the root directory of this source tree.
 
 # Experiments on CC data
-# usage: ./create_XLM_training_data.sh  <dataset> <language model>
+# usage: ./create_XLM_training_data.sh  <dataset> <language model> <data path>
 
 set -e
 
 ds=$1
 lm=$2
+DATA_PATH=$3
 
-INPATH=/srv/scratch4/tinner/test/$ds/processed/$lm
-OUTPATH=/srv/scratch4/tinner/test
+INPATH=$DATA_PATH/$ds/processed/$lm
+OUTPATH=$DATA_PATH
 
 # create directories for each experiment and fill them with symbolic links
 if [ $lm == en_fr ]; then

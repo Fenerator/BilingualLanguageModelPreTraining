@@ -1,16 +1,17 @@
 #!/bin/bash
-# Usage: ./generate_bpe.sh <LANGUAGE> <dataset> <lm-pair>
+# Usage: ./generate_bpe.sh <dataset> <lm-pair> <vocab size> <data path>
 
 set -e
 
 ds=$1 # dataset folder name
 lm=$2 # language model pair (e.g. en_tr or en_fr)
 vocabSize=$3
+DATA_PATH=$4
 
-####INPATH=/srv/scratch4/tinner/$ds/txt
-INPATH=/srv/scratch4/tinner/test/$ds/txt
-####OUTPATH=/srv/scratch4/tinner/$ds/processed/$lm
-OUTPATH=/srv/scratch4/tinner/test/$ds/processed/$lm
+#INPATH=/srv/scratch4/tinner/$ds/txt
+INPATH=$DATA_PATH/$ds/txt
+#OUTPATH=/srv/scratch4/tinner/$ds/processed/$lm
+OUTPATH=$DATA_PATH/$ds/processed/$lm
 echo LM $lm
 
 FASTBPE=tools/fastBPE/fast # path to the fastBPE tool
@@ -20,7 +21,6 @@ mkdir -p $OUTPATH
 
 # learn bpe codes on the bilingual training set
 echo "*** Learning BPE for $lm training set. Storing in $OUTPATH/codes ... ***"
-### $FASTBPE learnbpe 30000 $INPATH/$lm.train >$OUTPATH/codes
 $FASTBPE learnbpe $vocabSize $INPATH/$lm.train >$OUTPATH/codes
 
 echo "*** Getting post BPE vocabulary for $INPATH/$lm.train to be stored at $OUTPATH/vocab ... ***"

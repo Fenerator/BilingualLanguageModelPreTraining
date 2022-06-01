@@ -51,7 +51,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
 
 1. create venv using Python 3.7.3, activate
 
-2. install dependencies from `requirements.txt`, apex:
+2. install dependencies from `requirements.txt`, and apex:
 
     ```bash
     git clone https://github.com/NVIDIA/apex
@@ -59,23 +59,15 @@ We apply the MLM approach only, as we do not have parallel corporas.
     pip install -v --disable-pip-version-check --no-cache-dir ./
     ```
 
-    ```bash
-    # install XML package
-    pip install -e .
-    ```
-
 3. Download and tokenize the data: generates splits in the txt folder.
 
     ```bash
-    tmux attach-session -t bllmpt
-
-    # Download and tokenize Wikipedia data in 'data/wiki/en.{train,valid,test}'
     # Note: the tokenization includes lower-casing and accent-removal
-    ./get-data-wiki.sh en # TODO change numbers back
+    ./get-data-wiki.sh en <wiki path>
     ./get-data-wiki.sh fr 
     ./get-data-wiki.sh tr  
 
-    ./get-data-cc-100.sh en 
+    ./get-data-cc-100.sh en <language> <data path>
     ./get-data-cc-100.sh fr 
     ./get-data-cc-100.sh tr 
     ```
@@ -102,7 +94,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
     `codes` and `vocab` are not anymore language specific. 30000 was chosen as vocabulary size.
 
     ```bash
-    ./generate_bpe.sh cc en_fr <vocabulary size> 
+    ./generate_bpe.sh cc en_fr 30000 <dataset> <lm-pair> <vocab size> <data path>
     ./generate_bpe.sh cc en_tr  <vocabulary size> 
 
     ./generate_bpe.sh wiki en_fr <vocabulary size> 
@@ -112,7 +104,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
 6. Move all files into one folder required for one experiment and rename the files inside:
 
     ```bash
-    ./create_XLM_training_data.sh wiki en_fr
+    ./create_XLM_training_data.sh wiki en_fr <dataset> <language model> <data path>
     ./create_XLM_training_data.sh wiki en_tr
     ./create_XLM_training_data.sh cc en_fr
     ./create_XLM_training_data.sh cc en_tr
@@ -121,7 +113,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
 7. Train the model:
 
     ```bash
-    ./mod1.sh <><><><><>
+    ./mod1.sh <experiment name> <Experiment data>
     ```
 
     ```bash

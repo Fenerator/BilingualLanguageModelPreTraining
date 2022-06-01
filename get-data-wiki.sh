@@ -7,17 +7,19 @@
 #
 
 #
-# Usage: ./get-data-wiki.sh $lg
+# Usage: ./get-data-wiki.sh <language> <data path>
 #
 
 set -e
 
-lg=$1 # input language
+lg=$1        # input language
+WIKI_PATH=$2 # data path
 
-# data path
 MAIN_PATH=$PWD
+
 #WIKI_PATH=/srv/scratch4/tinner/wiki
-WIKI_PATH=/srv/scratch4/tinner/test/wiki
+#WIKI_PATH=/srv/scratch4/tinner/test/wiki
+
 # tools paths
 TOOLS_PATH=$PWD/tools
 TOKENIZE=$TOOLS_PATH/tokenize.sh
@@ -38,7 +40,7 @@ mkdir -p $TXT_PATH
 
 # download Wikipedia dump
 echo "Downloading $lg Wikipedia dump from $WIKI_DUMP_LINK ..."
-#####wget -c $WIKI_DUMP_LINK -P $WIKI_PATH/bz2/
+wget -c $WIKI_DUMP_LINK -P $WIKI_PATH/bz2/
 echo "Downloaded $WIKI_DUMP_NAME in $WIKI_PATH/bz2/$WIKI_DUMP_NAME"
 
 # extract and tokenize Wiki data
@@ -66,11 +68,10 @@ split_data() {
   }
   NLINES=$(wc -l $1 | awk -F " " '{print $1}')
   echo NLINES: $NLINES
-  #####NTRAIN=$((NLINES - 10000))
-  NTRAIN=$((NLINES - 10))
-  NVAL=$((NTRAIN + 5))
+  NTRAIN=$((NLINES - 10000))
+  NVAL=$((NTRAIN + 5000))
   shuf --random-source=<(get_seeded_random 42) $1 | head -$NTRAIN >$2
-  shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5 >$3
-  shuf --random-source=<(get_seeded_random 42) $1 | tail -5 >$4
+  shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5000 >$3
+  shuf --random-source=<(get_seeded_random 42) $1 | tail -5000 >$4
 }
 split_data $TXT_PATH/$lg.all $TXT_PATH/$lg.train $TXT_PATH/$lg.valid $TXT_PATH/$lg.test

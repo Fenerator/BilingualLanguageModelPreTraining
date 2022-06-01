@@ -1,16 +1,17 @@
 #!/bin/bash
 #
-# Usage: ./get-data-cc-100.sh $lg
+# Usage: ./get-data-cc-100.sh <language> <data path>
 #
 
 set -e
 
 lg=$1 # input language
+CC_PATH=$2
 
 # data path
 MAIN_PATH=$PWD
 #CC_PATH=/srv/scratch4/tinner/cc
-CC_PATH=/srv/scratch4/tinner/test/cc
+##CC_PATH=/srv/scratch4/tinner/test/cc
 mkdir -p $CC_PATH
 
 # tools paths
@@ -62,12 +63,11 @@ split_data() {
     }
     NLINES=$(wc -l $1 | awk -F " " '{print $1}')
     echo NLINES: $NLINES
-    ####NTRAIN=$((NLINES - 10000))
-    NTRAIN=$((NLINES - 10))
-    NVAL=$((NTRAIN + 5))
+    NTRAIN=$((NLINES - 10000))
+    NVAL=$((NTRAIN + 5000))
     shuf --random-source=<(get_seeded_random 42) $1 | head -$NTRAIN >$2
-    shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5 >$3
-    shuf --random-source=<(get_seeded_random 42) $1 | tail -5 >$4
+    shuf --random-source=<(get_seeded_random 42) $1 | head -$NVAL | tail -5000 >$3
+    shuf --random-source=<(get_seeded_random 42) $1 | tail -5000 >$4
 }
 split_data $TXT_PATH/$lg.all $TXT_PATH/$lg.train $TXT_PATH/$lg.valid $TXT_PATH/$lg.test
 echo "*** Created splits in $TXT_PATH .train, .valid, .test ***"
