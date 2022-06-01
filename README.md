@@ -2,7 +2,7 @@
 
 ## Approaches
 
-- Using Facebook's original code: Pre-training in the same way as XLM-R with MLM and TLM [here](https://github.com/facebookresearch/xlm#train-your-own-xlm-model-with-mlm-or-mlmtlm)
+- Using Facebook's original code: Pre-training in the same way as XLM-R using MLM [here](https://github.com/facebookresearch/xlm#train-your-own-xlm-model-with-mlm-or-mlmtlm)
 - (using Huggingface: Pre-training of language model (monolingual only): [here](https://huggingface.co/blog/how-to-train))
 
 ## Corpora & Domains
