@@ -41,8 +41,8 @@ python train.py \
     --batch_size 8 \
     --bptt 256 \
     --optimizer adam,lr=0.0001 \
-    --epoch_size 300000 \
-    --max_epoch 2 \
+    --epoch_size 100000 \
+    --max_epoch 100000 \
     --validation_metrics _valid_mlm_ppl \
     --stopping_criterion _valid_mlm_ppl,25 \
     --fp16 true
