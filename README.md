@@ -22,7 +22,7 @@
 Test size: 5000 lines, validation size: 5000 lines, rest used as training set
 Recreate proportions of data used in the original pre-training of XLM-R. We substitute SW by FR resp. TR and created datasets that represent the same proportional amount of pre-training data measured in GiB: SW / EN = 0.53%.
 
-Language Model: **EN_FR**
+Language Model: **EN_FR** (`mod1.sh`)
 
 | Ex # | Data | EN         | FR    |
 |----|-------|------------|-------|
@@ -31,7 +31,7 @@ Language Model: **EN_FR**
 | 1_wiki  | Wiki  | same size as FR (small) | 100%  |
 | 2_wiki  | Wiki  | 100% full size       | 0.53% of the EN size (`train_small.fr`) |
 
-Language Model: **EN_TR**
+Language Model: **EN_TR** (`mod2.sh`)
 
 | Ex # | Data | EN         | TR    |
 |----|-------|------------|-------|
@@ -46,7 +46,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
 
 1. create and activate venv I tested it using Python 3.7.3.
 
-2. install dependencies from `requirements.txt`, I needed additionally `apex`:
+2. install dependencies from `requirements.txt`, I additionally needed  `apex`:
 
     ```bash
     git clone https://github.com/NVIDIA/apex
@@ -54,7 +54,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
     pip install -v --disable-pip-version-check --no-cache-dir ./
     ```
 
-3. all following steps (4-8) are included in the `pretraining_pipeline.sh` script.
+3. all following steps (4-8) are included in the `pretraining_pipeline.sh` script. That contains all data related tasks and an examplary XLM model pre-training run of **model 1: en_fr** with default parameters.
 
     4. Download and tokenize the data: generates splits in the `txt` folder.
 
@@ -101,11 +101,11 @@ We apply the MLM approach only, as we do not have parallel corporas.
         ./create_XLM_training_data.sh cc en_tr
         ```
 
-    8. Train the model, here default parameters are used:
+    8. Train the model, here, default parameters are used:
     `encoder only` is activated by default
 
         ```bash
-        ./mod1.sh <experiment name> <experiment data>
+        ./mod1.sh <experiment name> <experiment data folder>
         ```
 
         ```bash
@@ -147,4 +147,4 @@ We apply the MLM approach only, as we do not have parallel corporas.
 
 ## Aim
 
-Control for typology, domain, script of the pre-training material used. Investigate whether similar effects occur in the cross-lingual topic evaluation metrics as was the case with Swahili, where (1) very limited amounts of training material are available and (2) domains seem to be rather limited in terms of diversity / sources. Upload models then to Huggingface, where we can easily use them in the topic model afterwards.
+Control for typology, domain, script of the pre-training material used. Investigate whether similar effects occur in the cross-lingual topic evaluation metrics as was the case with Swahili, where (1) very limited amounts of training material are available and (2) domains seem to be rather limited in terms of diversity / sources. We probably do not need to fine-tune the model on sentence similarity detection, and just use mean pooling over all tokens to derive sentence representations.

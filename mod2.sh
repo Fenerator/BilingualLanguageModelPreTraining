@@ -6,17 +6,17 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-# EN FR LM
-# Usage: ./mod1.sh <experiment name> <experiment data>
+# EN TR LM
+# Usage: ./mod2.sh <experiment name> <experiment data>
 #
 set -e
 #ds=$1       # dataset folder name e.g. wiki
 #lgs=$2      # input languages
 #mlm=$3      # mlm steps
-exp_name=$1 # e.g. ex1_wiki, ex2_wiki, ex1_cc, ex2_cc
+exp_name=$1 # e.g. ex3_wiki, ex4_wiki, ex3_cc, ex4_cc
 
 INPATH=$2
-#INPATH=/srv/scratch4/tinner/test/ex1_wiki
+#INPATH=/srv/scratch4/tinner/test/ex3_wiki
 
 OUTPATH=$INPATH/xlm_out
 
@@ -29,9 +29,9 @@ python train.py \
     --exp_name $exp_name \
     --dump_path $OUTPATH \
     --data_path $INPATH/ \
-    --lgs 'en-fr' \
+    --lgs 'en-tr' \
     --clm_steps '' \
-    --mlm_steps 'en,fr' \
+    --mlm_steps 'en,tr' \
     --emb_dim 2048 \
     --n_layers 12 \
     --n_heads 16 \
