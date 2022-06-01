@@ -49,9 +49,9 @@ Language Model: **EN_TR**
 
 We apply the MLM approach only, as we do not have parallel corporas.
 
-1. create venv, activate
+1. create venv using Python 3.7.3, activate
 
-2. install dependencies, apex:
+2. install dependencies from `requirements.txt`, apex:
 
     ```bash
     git clone https://github.com/NVIDIA/apex
