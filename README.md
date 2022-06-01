@@ -54,7 +54,11 @@ We apply the MLM approach only, as we do not have parallel corporas.
     pip install -v --disable-pip-version-check --no-cache-dir ./
     ```
 
-3. all following steps (4-8) are included in the `pretraining_pipeline.sh` script. That contains all data related tasks and an examplary XLM model pre-training run of **model 1: en_fr** with default parameters.
+3. all following steps (4-8) are executed by the `pretraining_pipeline.sh` script. This file contains all data related tasks and an examplary XLM model pre-training run of **model 1: en_fr** on the training files of `ex1_wiki` using default parameters. Inside the file `DATA_PATH` needs to be adapted.
+
+```bash
+./pretraining_pipeline.sh 
+```
 
     4. Download and tokenize the data: generates splits in the `txt` folder.
 
