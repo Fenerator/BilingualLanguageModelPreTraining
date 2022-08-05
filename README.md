@@ -74,7 +74,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
         ```
 
         > if error: `head: unrecognized option '--10000'
-        > Try 'head --help' for more information` occurs, delete files (correpsonding to `<LANG>`) in `data/wiki/txt`.
+        > Try 'head --help' for more information` occurs, delete files (corresponding to `<LANG>`) in `data/wiki/txt`.
 
     5. Generate bilingual training datasets and dataset of smaller sizes. All files are stored in the `txt` folder. Requires training files of all languages to be downloaded.
 
