@@ -56,25 +56,25 @@ We apply the MLM approach only, as we do not have parallel corporas.
 
 3. all following steps (4-8) are executed by the `pretraining_pipeline.sh` script. This file contains all data related tasks and an examplary XLM model pre-training run of **model 1: en_fr** on the training files of `ex1_wiki` using default parameters. Inside the file `DATA_PATH` needs to be adapted.
 
-```bash
-./pretraining_pipeline.sh 
-```
+    ```bash
+    ./pretraining_pipeline.sh 
+    ```
 
-    4. Download and tokenize the data: generates splits in the `txt` folder.
+4. Download and tokenize the data: generates splits in the `txt` folder.
 
-        ```bash
-        # Note: the tokenization includes lower-casing and accent-removal
-        ./get-data-wiki.sh en # <lang> <wiki path>
-        ./get-data-wiki.sh fr 
-        ./get-data-wiki.sh tr  
+    ```bash
+    # Note: the tokenization includes lower-casing and accent-removal
+    ./get-data-wiki.sh en # <lang> <wiki path>
+    ./get-data-wiki.sh fr 
+    ./get-data-wiki.sh tr  
 
-        ./get-data-cc-100.sh en #<language> <data path>
-        ./get-data-cc-100.sh fr 
-        ./get-data-cc-100.sh tr 
-        ```
+    ./get-data-cc-100.sh en #<language> <data path>
+    ./get-data-cc-100.sh fr 
+    ./get-data-cc-100.sh tr 
+    ```
 
-        > if error: `head: unrecognized option '--10000'
-        > Try 'head --help' for more information` occurs, delete files (corresponding to `<LANG>`) in `data/wiki/txt`.
+    > if error: `head: unrecognized option '--10000'
+    > Try 'head --help' for more information` occurs, delete files (corresponding to `<LANG>`) in `data/wiki/txt`.
 
     5. Generate bilingual training datasets and dataset of smaller sizes. All files are stored in the `txt` folder. Requires training files of all languages to be downloaded.
 
