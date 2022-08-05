@@ -76,7 +76,7 @@ We apply the MLM approach only, as we do not have parallel corporas.
     > if error: `head: unrecognized option '--10000'
     > Try 'head --help' for more information` occurs, delete files (corresponding to `<LANG>`) in `data/wiki/txt`.
 
-    5. Generate bilingual training datasets and dataset of smaller sizes. All files are stored in the `txt` folder. Requires training files of all languages to be downloaded.
+5. Generate bilingual training datasets and dataset of smaller sizes. All files are stored in the `txt` folder. Requires training files of all languages to be downloaded.
 
     ```bash
     ./generate-training-partitions.sh wiki en_fr # <dataset> <language pair>
@@ -85,8 +85,8 @@ We apply the MLM approach only, as we do not have parallel corporas.
     ./generate-training-partitions.sh cc en_tr
     ```
 
-    6. Generate BPE:
-        This script learns BPE on the training set of the respective two languages using **30k** codes, applys the encoding to all partitions of the data, creates the post-BPE vocabulary, and binarizes the data.
+6. Generate BPE:
+This script learns BPE on the training set of the respective two languages using **30k** codes, applys the encoding to all partitions of the data, creates the post-BPE vocabulary, and binarizes the data.
 
         ```bash
         ./generate_bpe.sh cc en_fr 30000 # <dataset> <language-pair> <vocab size> <data path>
@@ -96,58 +96,58 @@ We apply the MLM approach only, as we do not have parallel corporas.
         ./generate_bpe.sh wiki en_tr 30000 
         ```
 
-    7. Move all files into one folder required for one experiment and rename the files inside:
+7. Move all files into one folder required for one experiment and rename the files inside:
 
-        ```bash
-        ./create_XLM_training_data.sh wiki en_fr #<dataset> <language model> <data path>
-        ./create_XLM_training_data.sh wiki en_tr
-        ./create_XLM_training_data.sh cc en_fr
-        ./create_XLM_training_data.sh cc en_tr
-        ```
+    ```bash
+    ./create_XLM_training_data.sh wiki en_fr #<dataset> <language model> <data path>
+    ./create_XLM_training_data.sh wiki en_tr
+    ./create_XLM_training_data.sh cc en_fr
+    ./create_XLM_training_data.sh cc en_tr
+    ```
 
-    8. Train the model, here, default parameters are used:
-    `encoder only` is activated by default
+8. Train the model, here, default parameters are used:
+`encoder only` is activated by default
 
-        ```bash
-        ./mod1.sh <experiment name> <experiment data folder>
-        ```
+    ```bash
+    ./mod1.sh <experiment name> <experiment data folder>
+    ```
 
-        ```bash
-        python train.py
+    ```bash
+    python train.py
 
-        ## main parameters
-        --exp_name xlm_en_zh                       # experiment name
-        --dump_path ./dumped                       # where to store the experiment
+    ## main parameters
+    --exp_name xlm_en_zh                       # experiment name
+    --dump_path ./dumped                       # where to store the experiment
 
-        ## data location / training objective
-        --data_path $OUTPATH                       # data location
-        --lgs 'en-zh'                              #  languages lg1-lg2-lg3, ex: en-fr-es-de
-        --clm_steps ''                             # CLM objective (for training GPT-2 models) Causal prediction steps (CLM)
-        --mlm_steps 'en,zh'                        # MLM objective, lg1,lg2
+    ## data location / training objective
+    --data_path $OUTPATH                       # data location
+    --lgs 'en-zh'                              #  languages lg1-lg2-lg3, ex: en-fr-es-de
+    --clm_steps ''                             # CLM objective (for training GPT-2 models) Causal prediction steps (CLM)
+    --mlm_steps 'en,zh'                        # MLM objective, lg1,lg2
 
-        ## transformer parameters
-        --emb_dim 2048                             # embedding layer size / model dimension (2048 is big, reduce if only 16Gb of GPU memory)
-        --n_layers 12                              # number of Transformer layers
-        --n_heads 16                               # number of Transformer heads
-        --dropout 0.1                              # dropout
-        --attention_dropout 0.1                    # attention dropout
-        --gelu_activation true                     # GELU instead of ReLU
+    ## transformer parameters
+    --emb_dim 2048                             # embedding layer size / model dimension (2048 is big, reduce if only 16Gb of GPU memory)
+    --n_layers 12                              # number of Transformer layers
+    --n_heads 16                               # number of Transformer heads
+    --dropout 0.1                              # dropout
+    --attention_dropout 0.1                    # attention dropout
+    --gelu_activation true                     # GELU instead of ReLU
 
-        ## optimization
-        --batch_size 32                            # # Number of sentences per batch
-        --bptt 256                                 # sequences length  (streams of 256 tokens)
-        --optimizer adam,lr=0.0001                 # optimizer (training is quite sensitive to this parameter)
-        --epoch_size 300000                        # number of sentences per epoch
-        --max_epoch 100000                         # max number of epochs (~infinite here)
-        --validation_metrics _valid_mlm_ppl        # validation metric (when to save the best model)
-        --stopping_criterion _valid_mlm_ppl,25     # stopping criterion (if criterion does not improve 25 times)
+    ## optimization
+    --batch_size 32                            # # Number of sentences per batch
+    --bptt 256                                 # sequences length  (streams of 256 tokens)
+    --optimizer adam,lr=0.0001                 # optimizer (training is quite sensitive to this parameter)
+    --epoch_size 300000                        # number of sentences per epoch
+    --max_epoch 100000                         # max number of epochs (~infinite here)
+    --validation_metrics _valid_mlm_ppl        # validation metric (when to save the best model)
+    --stopping_criterion _valid_mlm_ppl,25     # stopping criterion (if criterion does not improve 25 times)
 
-        ## float16 / AMP API
-        --amp 1 \ # Use AMP wrapper for float16 / distributed / gradient accumulation.
-        --fp16 true                                # Run model with float16
+    ## float16 / AMP API
+    --amp 1 \ # Use AMP wrapper for float16 / distributed / gradient accumulation.
+    --fp16 true                                # Run model with float16
 
-        ## There are other parameters that are not specified here (see [here](https://github.com/facebookresearch/XLM/blob/master/train.py#L24-L198)).
-        ```
+    ## There are other parameters that are not specified here (see [here](https://github.com/facebookresearch/XLM/blob/master/train.py#L24-L198)).
+    ```
 
 ## Aim
 
