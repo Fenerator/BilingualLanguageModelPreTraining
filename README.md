@@ -1,6 +1,10 @@
 # Pre-training of Bilingual Language Models
 
-## Approaches
+## Aim
+
+Control for typology, domain, and script of the pre-training material used in multilingual language models. Investigate whether similar effects occur in the cross-lingual topic evaluation metrics as was the case with Swahili, where (1) very limited amounts of training material are available and (2) domains seem to be rather limited in terms of diversity / sources. We probably do not need to fine-tune the model on sentence similarity detection, and just use mean pooling over all tokens to derive sentence representations.
+
+## Approaches Investigated
 
 - Using Facebook's original code: Pre-training in the same way as XLM-R using MLM [here](https://github.com/facebookresearch/xlm#train-your-own-xlm-model-with-mlm-or-mlmtlm)
 - (using Huggingface: Pre-training of language model (monolingual only): [here](https://huggingface.co/blog/how-to-train))
@@ -149,6 +153,3 @@ This script learns BPE on the training set of the respective two languages using
     ## There are other parameters that are not specified here (see [here](https://github.com/facebookresearch/XLM/blob/master/train.py#L24-L198)).
     ```
 
-## Aim
-
-Control for typology, domain, script of the pre-training material used. Investigate whether similar effects occur in the cross-lingual topic evaluation metrics as was the case with Swahili, where (1) very limited amounts of training material are available and (2) domains seem to be rather limited in terms of diversity / sources. We probably do not need to fine-tune the model on sentence similarity detection, and just use mean pooling over all tokens to derive sentence representations.
